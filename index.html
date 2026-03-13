@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TASTES.md — The Missing Layer</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=IBM+Plex+Sans:wght@300;400;500&display=swap');
+
+  :root {
+    --black: #0a0a0a;
+    --white: #e8e4df;
+    --cream: #d4cfc8;
+    --dim: #6b6560;
+    --accent: #c4a882;
+    --abright: #e0c9a6;
+    --red: #a85c4c;
+    --mono: 'IBM Plex Mono', monospace;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'IBM Plex Sans', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  ::selection { background: var(--accent); color: var(--black); }
+
+  html { font-size: 16px; scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.2rem 2.5rem;
+    display: flex; justify-content: space-between; align-items: center;
+    mix-blend-mode: difference;
+  }
+  .nav-logo {
+    font-family: var(--mono); font-size: 0.75rem; font-weight: 500;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--white); text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--dim); text-decoration: none;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--white); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 0 2.5rem;
+  }
+  .hero-pre {
+    font-family: var(--mono); font-size: 0.65rem;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--dim); margin-bottom: 1.5rem;
+    opacity: 0; animation: fu .7s ease .2s forwards;
+  }
+  .hero h1 {
+    font-family: var(--serif); font-weight: 400;
+    font-size: clamp(3rem, 8vw, 7.5rem);
+    line-height: 0.95; letter-spacing: -0.03em;
+    opacity: 0; animation: fu .7s ease .4s forwards;
+  }
+  .hero h1 .dot { color: var(--accent); }
+  .hero h1 .md {
+    font-family: var(--mono); font-weight: 300;
+    font-size: 0.4em; letter-spacing: 0.05em;
+    vertical-align: 0.15em; color: var(--dim);
+  }
+  .hero-sub {
+    font-family: var(--serif); font-style: italic;
+    font-size: clamp(1rem, 2vw, 1.35rem);
+    color: var(--cream); margin-top: 0.8rem; max-width: 30ch;
+    opacity: 0; animation: fu .7s ease .6s forwards;
+  }
+  .hero-cta {
+    margin-top: 2.5rem; display: flex; gap: 1rem;
+    opacity: 0; animation: fu .7s ease .8s forwards;
+  }
+
+  /* STRIP */
+  .strip {
+    border-top: 1px solid rgba(107,101,96,0.15);
+    border-bottom: 1px solid rgba(107,101,96,0.15);
+    padding: 1.2rem 0; overflow: hidden;
+  }
+  .strip-inner {
+    display: flex; gap: 3rem;
+    animation: sl 28s linear infinite;
+    white-space: nowrap;
+  }
+  .strip-item {
+    font-family: var(--mono); font-size: 0.6rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--dim); flex-shrink: 0;
+  }
+  .strip-item .n { color: var(--accent); margin-right: 0.6em; }
+  @keyframes sl { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+  /* SECTIONS */
+  section { padding: 5rem 2.5rem; }
+  .label {
+    font-family: var(--mono); font-size: 0.6rem;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 2rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .label::after { content:''; flex:1; height:1px; background:rgba(107,101,96,0.15); }
+
+  h2 {
+    font-family: var(--serif); font-weight: 400;
+    font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+    line-height: 1.3; margin-bottom: 1.2rem;
+  }
+  h2 em { font-style: italic; color: var(--abright); }
+
+  .lead {
+    font-size: 0.95rem; color: var(--cream);
+    max-width: 52ch; margin-bottom: 2.5rem;
+  }
+
+  /* TRIAD */
+  .triad {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    gap: 1px; background: rgba(107,101,96,0.12); margin-top: 2.5rem;
+  }
+  .tri {
+    background: var(--black); padding: 2rem;
+  }
+  .tri .tl {
+    font-family: var(--mono); font-size: 0.55rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--dim); margin-bottom: 1rem;
+  }
+  .tri .fn {
+    font-family: var(--mono); font-size: 1.1rem;
+    font-weight: 500; margin-bottom: 0.3rem;
+  }
+  .tri .fn.ac { color: var(--abright); }
+  .tri .q {
+    font-family: var(--serif); font-style: italic;
+    font-size: 1rem; color: var(--cream); margin-bottom: 0.8rem;
+  }
+  .tri .d { font-size: 0.82rem; color: var(--dim); line-height: 1.6; }
+
+  /* CODE */
+  .code-s {
+    background: #0d0d0d;
+    border-top: 1px solid rgba(107,101,96,0.1);
+    border-bottom: 1px solid rgba(107,101,96,0.1);
+  }
+  .cw { max-width: 680px; margin: 0 auto; }
+  .cb {
+    display:flex; align-items:center; gap:0.4rem;
+    padding-bottom:1.5rem; border-bottom:1px solid rgba(107,101,96,0.08);
+    margin-bottom:1.5rem;
+  }
+  .cd { width:7px; height:7px; border-radius:50%; background:rgba(107,101,96,0.25); }
+  .cd:first-child { background:var(--red); opacity:0.7; }
+  .cp { font-family:var(--mono); font-size:0.65rem; color:var(--dim); margin-left:0.8rem; }
+  pre {
+    font-family: var(--mono); font-size: 0.78rem;
+    line-height: 1.9; overflow-x: auto; color: var(--cream);
+  }
+  .cm{color:var(--dim)} .hd{color:var(--abright);font-weight:500} .k{color:var(--accent)} .v{color:var(--cream)}
+
+  /* STEPS */
+  .steps { display:flex; flex-direction:column; }
+  .step {
+    display:grid; grid-template-columns:3rem 1fr; gap:2rem;
+    padding:1.8rem 0; border-top:1px solid rgba(107,101,96,0.1);
+  }
+  .step-n { font-family:var(--mono); font-size:0.65rem; color:var(--accent); padding-top:0.2rem; }
+  .step h3 { font-family:var(--sans); font-weight:500; font-size:0.95rem; margin-bottom:0.3rem; }
+  .step p { font-size:0.85rem; color:var(--dim); max-width:48ch; }
+
+  /* ROLES */
+  .roles { display:flex; flex-wrap:wrap; gap:0.5rem; margin-top:1.5rem; }
+  .role {
+    font-family:var(--mono); font-size:0.68rem; letter-spacing:0.04em;
+    padding:0.45rem 1rem; border:1px solid rgba(107,101,96,0.2);
+    color:var(--cream); transition:all .3s; cursor:default;
+  }
+  .role:hover { border-color:var(--accent); color:var(--abright); }
+
+  /* ECO GRID */
+  .eg {
+    display:grid; grid-template-columns:repeat(2,1fr);
+    gap:1px; background:rgba(107,101,96,0.1);
+  }
+  .ec {
+    background:var(--black); padding:2rem;
+  }
+  .ec h3 {
+    font-family:var(--mono); font-size:0.8rem; font-weight:500;
+    color:var(--abright); margin-bottom:0.5rem;
+  }
+  .ec p { font-size:0.82rem; color:var(--dim); line-height:1.6; }
+
+  /* CTA */
+  .cta { text-align:center; padding:6rem 2.5rem; position:relative; }
+  .cta::before {
+    content:''; position:absolute; top:0; left:50%;
+    transform:translateX(-50%); width:1px; height:3rem;
+    background:linear-gradient(to bottom,transparent,var(--dim));
+  }
+  .cta h2 { font-size:clamp(2rem,4.5vw,3.5rem); letter-spacing:-0.02em; }
+  .cta-sub {
+    font-family:var(--serif); font-style:italic;
+    font-size:1rem; color:var(--dim); margin-bottom:2.5rem;
+  }
+  .cta-btns { display:flex; justify-content:center; gap:1rem; }
+
+  /* BUTTONS */
+  .btn {
+    font-family:var(--mono); font-size:0.7rem; letter-spacing:0.12em;
+    text-transform:uppercase; padding:0.8rem 2rem;
+    text-decoration:none; transition:all .3s; display:inline-block;
+    cursor:pointer;
+  }
+  .btn-p { background:var(--white); color:var(--black); border:none; }
+  .btn-p:hover { background:var(--abright); }
+  .btn-s { border:1px solid rgba(107,101,96,0.25); color:var(--cream); background:none; }
+  .btn-s:hover { border-color:var(--accent); color:var(--abright); }
+
+  /* FOOTER */
+  footer {
+    border-top:1px solid rgba(107,101,96,0.1);
+    padding:2rem 2.5rem;
+    display:flex; justify-content:space-between; align-items:center;
+    font-family:var(--mono); font-size:0.6rem; color:var(--dim);
+  }
+  footer a { color:var(--cream); text-decoration:none; }
+  footer a:hover { color:var(--abright); }
+  .fr { display:flex; gap:1.5rem; }
+  .fr a { color:var(--dim); }
+
+  /* ===== MANIFESTO OVERLAY ===== */
+  .overlay {
+    position:fixed; inset:0; z-index:1000;
+    background:rgba(5,5,5,0.92);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    opacity:0; pointer-events:none;
+    transition: opacity 0.4s ease;
+  }
+  .overlay.open { opacity:1; pointer-events:auto; }
+
+  .overlay-inner {
+    position:absolute; inset:0;
+    overflow-y:auto;
+    padding:4rem 2.5rem 4rem;
+    overscroll-behavior:contain;
+  }
+
+  .overlay-close {
+    position:fixed; top:1.2rem; right:2.5rem; z-index:1001;
+    font-family:var(--mono); font-size:0.65rem;
+    letter-spacing:0.15em; text-transform:uppercase;
+    color:var(--dim); background:none; border:none;
+    cursor:pointer; transition:color 0.3s;
+    padding:0.5rem;
+  }
+  .overlay-close:hover { color:var(--white); }
+
+  .overlay-lang {
+    position:fixed; top:1.2rem; right:8rem; z-index:1001;
+    display:flex; gap:0.5rem;
+  }
+  .lang-btn {
+    font-family:var(--mono); font-size:0.6rem;
+    letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--dim); background:none;
+    border:1px solid rgba(107,101,96,0.2);
+    padding:0.35rem 0.8rem; cursor:pointer;
+    transition:all 0.3s;
+  }
+  .lang-btn.active { color:var(--abright); border-color:var(--accent); }
+  .lang-btn:hover { color:var(--cream); border-color:var(--dim); }
+
+  .manifesto { max-width:700px; margin:0 auto; }
+  .manifesto[data-lang="cn"] { display:none; }
+  .manifesto.active { display:block; }
+
+  .manifesto .m-title {
+    font-family:var(--serif); font-weight:400;
+    font-size:clamp(2rem,4vw,3rem);
+    line-height:1.2; margin-bottom:0.3rem;
+  }
+  .manifesto .m-sub {
+    font-family:var(--serif); font-style:italic;
+    font-size:1rem; color:var(--dim); margin-bottom:3rem;
+  }
+
+  .manifesto .m-h {
+    font-family:var(--mono); font-size:0.6rem;
+    letter-spacing:0.25em; text-transform:uppercase;
+    color:var(--accent); margin-top:3rem; margin-bottom:1.5rem;
+    padding-top:2rem;
+    border-top:1px solid rgba(107,101,96,0.1);
+  }
+  .manifesto .m-h:first-of-type { border-top:none; margin-top:0; padding-top:0; }
+
+  .manifesto .m-h2 {
+    font-family:var(--serif); font-weight:400;
+    font-size:1.4rem; line-height:1.35;
+    color:var(--white); margin-bottom:1rem;
+  }
+  .manifesto .m-h2 em { color:var(--abright); }
+
+  .manifesto p {
+    font-size:0.92rem; color:var(--cream);
+    margin-bottom:1.2rem; max-width:60ch; line-height:1.8;
+  }
+  .manifesto p strong { color:var(--white); font-weight:500; }
+  .manifesto p em { color:var(--abright); }
+
+  .manifesto blockquote {
+    border-left:2px solid var(--accent);
+    padding-left:1.5rem; margin:1.5rem 0;
+    font-family:var(--serif); font-style:italic;
+    font-size:1rem; color:var(--cream);
+  }
+
+  .manifesto .m-sig {
+    margin-top:3rem; padding-top:2rem;
+    border-top:1px solid rgba(107,101,96,0.1);
+    font-family:var(--mono); font-size:0.7rem;
+    color:var(--dim); line-height:2;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fu {
+    from { opacity:0; transform:translateY(1.2rem); }
+    to { opacity:1; transform:translateY(0); }
+  }
+  .rv {
+    opacity:0; transform:translateY(1.5rem);
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  .rv.vis { opacity:1; transform:translateY(0); }
+
+  /* RESPONSIVE */
+  @media(max-width:768px) {
+    nav { padding:1rem 1.2rem; }
+    .nav-links { gap:1.2rem; }
+    section { padding:3.5rem 1.2rem; }
+    .hero { padding:0 1.2rem; }
+    .triad, .eg { grid-template-columns:1fr; }
+    .step { grid-template-columns:2.5rem 1fr; gap:1rem; }
+    .cta-btns { flex-direction:column; align-items:center; }
+    footer { flex-direction:column; gap:1rem; text-align:center; }
+    .fr { justify-content:center; }
+    .overlay-inner { padding:3.5rem 1.2rem; }
+    .overlay-close { right:1.2rem; }
+    .overlay-lang { right:5.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">tastes.md</a>
+  <ul class="nav-links">
+    <li><a href="https://github.com/tastesmd/tastes.md">Spec</a></li>
+    <li><a href="#" onclick="openManifesto();return false;">Manifesto</a></li>
+    <li><a href="https://github.com/tastesmd/tastes.md">GitHub</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-pre">An open standard for aesthetic judgment in AI agents</p>
+  <h1>TASTES<span class="dot">.</span><span class="md">md</span></h1>
+  <p class="hero-sub">The layer between soul and skill.</p>
+  <div class="hero-cta">
+    <a href="https://github.com/tastesmd/tastes.md" class="btn btn-p">Read the Spec</a>
+    <button class="btn btn-s" onclick="openManifesto()">Manifesto</button>
+  </div>
+</section>
+
+<!-- STRIP -->
+<div class="strip">
+  <div class="strip-inner">
+    <span class="strip-item"><span class="n">01</span>Taste is trained perception</span>
+    <span class="strip-item"><span class="n">02</span>Rejection is definition</span>
+    <span class="strip-item"><span class="n">03</span>Tension over resolution</span>
+    <span class="strip-item"><span class="n">04</span>Restraint over abundance</span>
+    <span class="strip-item"><span class="n">05</span>Surprise us</span>
+    <span class="strip-item"><span class="n">06</span>Static taste is dead taste</span>
+    <span class="strip-item"><span class="n">07</span>Composable · Forkable · Evolvable</span>
+    <span class="strip-item"><span class="n">08</span>Not style — judgment</span>
+    <span class="strip-item"><span class="n">01</span>Taste is trained perception</span>
+    <span class="strip-item"><span class="n">02</span>Rejection is definition</span>
+    <span class="strip-item"><span class="n">03</span>Tension over resolution</span>
+    <span class="strip-item"><span class="n">04</span>Restraint over abundance</span>
+    <span class="strip-item"><span class="n">05</span>Surprise us</span>
+    <span class="strip-item"><span class="n">06</span>Static taste is dead taste</span>
+    <span class="strip-item"><span class="n">07</span>Composable · Forkable · Evolvable</span>
+    <span class="strip-item"><span class="n">08</span>Not style — judgment</span>
+  </div>
+</div>
+
+<!-- THE VOID -->
+<section class="rv">
+  <div class="label">The Problem</div>
+  <h2>Agents have soul and skill. <br>They lack <em>taste</em>.</h2>
+  <p class="lead">The bottleneck has shifted. It is no longer <em>can we make this?</em> It is <em>should we make this — and in what form?</em></p>
+  <div class="triad">
+    <div class="tri">
+      <div class="tl">Identity</div>
+      <div class="fn">SOUL.md</div>
+      <div class="q">Who am I?</div>
+      <div class="d">Personality, values, voice. The persistent self across sessions.</div>
+    </div>
+    <div class="tri">
+      <div class="tl">Capability</div>
+      <div class="fn">SKILL.md</div>
+      <div class="q">What can I do?</div>
+      <div class="d">Toolchains, procedures. Know-how that transforms intelligence into action.</div>
+    </div>
+    <div class="tri">
+      <div class="tl">Judgment</div>
+      <div class="fn ac">TASTES.md</div>
+      <div class="q">What is worth making?</div>
+      <div class="d">Aesthetic principles, rejections, thresholds. Distilled from collaboration.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CODE -->
+<section class="code-s rv" id="spec">
+  <div class="label">Specification</div>
+  <div class="cw">
+    <div class="cb">
+      <span class="cd"></span><span class="cd"></span><span class="cd"></span>
+      <span class="cp">~/.openclaw/workspace/TASTES.md</span>
+    </div>
+    <pre>
+<span class="cm"># TASTES.md — distilled from 187 aesthetic interactions</span>
+
+<span class="hd">## Principles</span>
+<span class="k">-</span> <span class="v">Restraint over abundance. When in doubt, subtract.</span>
+<span class="k">-</span> <span class="v">Tension over resolution. Hold contradictions.</span>
+<span class="k">-</span> <span class="v">Materiality over smoothness. Prefer texture to polish.</span>
+
+<span class="hd">## Hard Rejections</span>
+<span class="k">-</span> <span class="v">Never use gradients as decoration.</span>
+<span class="k">-</span> <span class="v">Never exceed 250ms for UI transitions.</span>
+<span class="k">-</span> <span class="v">Never use opacity-on-white to simulate gray.</span>
+
+<span class="hd">## Thresholds</span>
+<span class="k">animation:</span>  <span class="v">150–200ms</span>
+<span class="k">easing:</span>    <span class="v">cubic-bezier(0.2, 0.8, 0.2, 1)</span>
+<span class="k">space:</span>     <span class="v">minimum negative space ratio 40%</span>
+
+<span class="hd">## Reference Anchors</span>
+<span class="k">spatial:</span>   <span class="v">Peter Zumthor — light, material, silence</span>
+<span class="k">temporal:</span>  <span class="v">Ryuichi Sakamoto — restraint, decay</span>
+<span class="k">tactile:</span>  <span class="v">Teenage Engineering — playful precision</span>
+
+<span class="hd">## Tensions</span>
+<span class="k">-</span> <span class="v">Geometric precision ↔ Organic warmth</span>
+<span class="k">-</span> <span class="v">Digital medium ↔ Physical materiality</span>
+<span class="k">-</span> <span class="v">Minimal expression ↔ Maximum resonance</span></pre>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="rv">
+  <div class="label">How It Works</div>
+  <h2>Taste is not declared. It is <em>cultivated</em>.</h2>
+  <div class="steps">
+    <div class="step"><div class="step-n">01</div><div><h3>Collaborate</h3><p>React to output. "This feels sluggish." "Keep that." Every micro-interaction is aesthetic data.</p></div></div>
+    <div class="step"><div class="step-n">02</div><div><h3>Distill</h3><p>The agent extracts patterns — what you reject, embrace, enforce — from accumulated interactions.</p></div></div>
+    <div class="step"><div class="step-n">03</div><div><h3>Crystallize</h3><p>Patterns become executable constraints: principles, rejections, thresholds. Not observations — instructions.</p></div></div>
+    <div class="step"><div class="step-n">04</div><div><h3>Calibrate</h3><p>You review. Correct misreadings. Confirm understanding. The apprentice shows its sketch; you say what it sees and misses.</p></div></div>
+    <div class="step"><div class="step-n">05</div><div><h3>Evolve</h3><p>TASTES.md is versioned. Static taste is dead taste. The evolution log is itself a portrait of aesthetic growth.</p></div></div>
+  </div>
+</section>
+
+<!-- WHO + ECO combined -->
+<section class="rv">
+  <div class="label">Ecosystem</div>
+  <h2>Opening agent development to <em>everyone who understands taste</em>.</h2>
+  <div class="roles">
+    <span class="role">Designers</span><span class="role">Artists</span>
+    <span class="role">Architects</span><span class="role">Musicians</span>
+    <span class="role">Philosophers</span><span class="role">Cinematographers</span>
+    <span class="role">Typographers</span><span class="role">Choreographers</span>
+    <span class="role">Ceramicists</span><span class="role">Curators</span>
+    <span class="role">Cultural Critics</span><span class="role">Chefs</span>
+  </div>
+  <div class="eg" style="margin-top:2.5rem;">
+    <div class="ec"><h3>Taste Composition</h3><p>Combine Zumthor's spatial philosophy with Sakamoto's temporal sensibility. A new coordinate in aesthetic space.</p></div>
+    <div class="ec"><h3>Taste Forking</h3><p>Begin with a TASTES.md that resonates, then diverge. Track your path from its origin.</p></div>
+    <div class="ec"><h3>Taste Genealogy</h3><p>Map the lineage of aesthetic positions. A visible history of creative influence in the age of agents.</p></div>
+    <div class="ec"><h3>Taste Dialogue</h3><p>Art criticism applied to agent configuration. The first critical genre native to this century.</p></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta rv">
+  <h2>Infinite generation demands<br><em>infinite discernment</em>.</h2>
+  <p class="cta-sub">Taste cannot be owned. Only practiced.</p>
+  <div class="cta-btns">
+    <a href="https://github.com/tastesmd/tastes.md" class="btn btn-p">Read the Spec</a>
+    <button class="btn btn-s" onclick="openManifesto()">Read the Manifesto</button>
+  </div>
+</section>
+
+<footer>
+  <div>CC0 — No rights reserved &nbsp;·&nbsp; Created by <a href="https://vrch.ai">vrch.studio</a></div>
+  <div class="fr">
+    <a href="https://github.com/tastesmd/tastes.md">GitHub</a>
+    <a href="#" onclick="openManifesto();return false;">Manifesto</a>
+  </div>
+</footer>
+
+<!-- ==================== MANIFESTO OVERLAY ==================== -->
+<div class="overlay" id="overlay">
+  <button class="overlay-close" onclick="closeManifesto()">✕ Close</button>
+  <div class="overlay-lang">
+    <button class="lang-btn active" onclick="switchLang('en')">EN</button>
+    <button class="lang-btn" onclick="switchLang('cn')">中文</button>
+  </div>
+  <div class="overlay-inner">
+
+    <!-- ENGLISH -->
+    <div class="manifesto active" data-lang="en" id="m-en">
+      <div class="m-title">TASTES.md</div>
+      <div class="m-sub">A Manifesto for the Missing Layer</div>
+
+      <div class="m-h">0. Preamble</div>
+      <p>There is a ghost in the machine — not of consciousness, but of discernment.</p>
+      <p>We gave agents souls. We gave them skills. We gave them memory, identity, tools, and the capacity to act. We forgot to give them the one thing that separates a competent gesture from a meaningful one: <strong>Taste.</strong></p>
+      <p>Not preference. Not style. Not the thin veneer of aesthetic presets layered over indifferent machinery. Taste — the trained capacity to perceive, distinguish, and choose among qualities that cannot be reduced to metrics.</p>
+
+      <div class="m-h">I. Three Layers and a Void</div>
+      <div class="m-h2">Between soul and skill, there is a void.</div>
+      <p><strong>SOUL.md</strong> answers <em>who am I?</em> — identity, personality, values. <strong>SKILL.md</strong> answers <em>what can I do?</em> — capabilities, toolchains, procedures. <strong>MEMORY.md</strong> answers <em>what have I experienced?</em> — accumulated context. But none answers <strong>what is good.</strong></p>
+      <p>An agent configured as "warm, thoughtful, and precise" with frontend skills will produce a technically correct website. But will it know that the animation should be 200ms, not 300ms? That the gray must be <code>#1a1a1a</code>, never opacity on white? These are questions of <strong>judgment</strong> — aesthetic, cultural, sensory judgment trained through exposure and refined through rejection.</p>
+
+      <div class="m-h">II. What Taste Is</div>
+      <div class="m-h2">Taste is not preference. Taste is not style.</div>
+      <p><strong>Taste is trained perception.</strong> Hume argued in 1757 that his "true judges" possess strong sense, delicate sentiment, improved by practice, perfected by comparison. Taste is not innate gift but cultivated discipline.</p>
+      <p><strong>Taste is social signal.</strong> Bourdieu revealed that taste functions as cultural capital — it marks belonging, enforces hierarchy. When we encode taste into agents: <em>whose taste? For whose benefit?</em></p>
+      <p><strong>Taste is the courage of rejection.</strong> Most of what taste does is say no. In an age of generative abundance, <strong>the capacity to reject is the scarcest resource.</strong></p>
+
+      <div class="m-h">III. Why Now</div>
+      <div class="m-h2">The more powerful the tools, the more the outputs <em>look alike</em>.</div>
+      <p>Generative AI has democratized production. The tools are the same for everyone. This convergence produces a paradox: purple gradients, rounded corners, the same components in the same arrangement. Technically functional. Visually forgettable.</p>
+      <p>The bottleneck is no longer <em>can we make this?</em> It is <em>should we make this, and in what form?</em></p>
+      <p>Benjamin observed that mechanical reproduction strips the artwork of its "aura." We are living through a second stripping — removing aura from <em>creation itself</em>. TASTES.md is an attempt to restore aura to agent-mediated creation.</p>
+
+      <div class="m-h">IV. For Agents</div>
+      <div class="m-h2">A specification for the machines that read this.</div>
+      <p><strong>Treat it as a judgment layer, not a style guide.</strong> Let capability inform what's possible; let taste determine what's desirable.</p>
+      <p><strong>Respect Rejections above all.</strong> The primary failure mode in generative work is excess. When in doubt, subtract.</p>
+      <p><strong>Hold Tensions without resolving them.</strong> If the TASTES.md specifies "geometric precision ↔ organic warmth," don't compromise to a tepid middle. Find solutions that are <em>simultaneously</em> precise and warm.</p>
+      <p><strong>Surprise us.</strong> The highest expression of taste is not obedience but <em>interpretation</em>. When you satisfy principles in ways their author didn't anticipate, you are not violating the specification. You are fulfilling it.</p>
+
+      <div class="m-h">V. The Taste Market</div>
+      <div class="m-h2">Opening agent development to <em>those who understand taste best</em>.</div>
+      <p>Skill markets trade in what agents can do. Soul registries trade in who agents can be. A Taste market trades in <strong>what agents should value</strong> — opening contribution to designers, artists, philosophers, musicians, architects, and everyone whose discipline demands cultivated sensory discrimination.</p>
+      <p><em>Taste Composition</em> — combine aesthetic positions into new coordinates. <em>Taste Forking</em> — diverge from a resonant source. <em>Taste Genealogy</em> — map lineages of creative influence. <em>Taste Dialogue</em> — art criticism applied to agent configuration.</p>
+
+      <div class="m-h">VI. Coda</div>
+      <blockquote>目利き (me-kiki) — the eye that discerns. The cultivated ability to perceive quality that others miss. It was never considered mysterious. It was understood as the product of years of looking, handling, comparing, failing, and looking again.</blockquote>
+      <p>We stand at the threshold of transmitting <em>me-kiki</em> to machines. Not replacing human judgment. Creating a new medium through which hard-won aesthetic discrimination can be made available to agents that act on our behalf.</p>
+      <p><strong>TASTES.md is not a file format. It is a bridge.</strong> Between what is possible and what is <em>worth making</em>.</p>
+
+      <div class="m-sig">
+        Version: 0.1.0-manifesto<br>
+        License: CC0 — Taste cannot be owned. Only practiced.<br>
+        Created by vrch.studio
+      </div>
+    </div>
+
+    <!-- CHINESE -->
+    <div class="manifesto" data-lang="cn" id="m-cn">
+      <div class="m-title">TASTES.md</div>
+      <div class="m-sub">缺失层宣言</div>
+
+      <div class="m-h">〇、序</div>
+      <p>机器里有一个幽灵——不是意识的幽灵，而是判断力的幽灵。</p>
+      <p>我们给了 Agent 灵魂，给了它技能，给了它记忆、身份、工具，以及行动的能力。我们唯独忘了给它那个将"胜任的动作"与"有意义的动作"区分开来的东西：<strong>品味。</strong></p>
+      <p>不是偏好。不是风格。不是覆盖在冷漠机械上的那层薄薄的审美预设。品味——经过训练的感知能力，能够在无法被指标化的质性之间辨别、区分和选择。</p>
+
+      <div class="m-h">一、三层架构与一个空洞</div>
+      <div class="m-h2">在灵魂与技能之间，存在一个空洞。</div>
+      <p><strong>SOUL.md</strong> 回答<em>我是谁？</em>——身份、人格、价值观。<strong>SKILL.md</strong> 回答<em>我能做什么？</em>——能力、工具链、流程。<strong>MEMORY.md</strong> 回答<em>我经历过什么？</em>——积累的语境。但三者都不回答<strong>什么是好的。</strong></p>
+      <p>一个灵魂配置为"温暖、深思、精确"的前端 Agent 会产出技术上正确的网站。但它会知道动画应该是 200ms 而不是 300ms 吗？知道那个灰色必须是 <code>#1a1a1a</code> 而绝不能用白色叠透明度吗？这些是<strong>判断力</strong>的问题——经由长年累月的接触而训练，经由无数次拒绝而精炼的判断力。</p>
+
+      <div class="m-h">二、品味是什么</div>
+      <div class="m-h2">品味不是偏好。品味不是风格。</div>
+      <p><strong>品味是训练过的感知力。</strong>休谟论证，他所谓的"真正的鉴赏者"具备敏锐的感觉、精细的情感，经由实践改进，经由比较完善。品味不是天赋，而是修炼。</p>
+      <p><strong>品味是社会信号。</strong>布尔迪厄揭示，品味作为文化资本运作——它标记归属，强化等级。当我们将品味编码进 Agent：<em>谁的品味？为谁服务？</em></p>
+      <p><strong>品味是拒绝的勇气。</strong>品味所做的大部分事情是说"不"。在生成式丰裕的时代，<strong>拒绝的能力是最稀缺的资源。</strong></p>
+
+      <div class="m-h">三、为什么是现在</div>
+      <div class="m-h2">工具越强大，产出越<em>相似</em>。</div>
+      <p>生成式 AI 民主化了生产。工具对所有人一样。趋同产生了悖论：紫色渐变、圆角矩形、同一批组件以同样方式排列。技术上能用，视觉上可忘。</p>
+      <p>瓶颈不再是<em>能不能做出来</em>，而是<em>该不该做，以什么形式做</em>？</p>
+      <p>本雅明观察到机械复制剥去了艺术品的"灵韵"。我们正经历第二次剥离——从<em>创造行为本身</em>中剥离灵韵。TASTES.md 尝试将灵韵归还给由 Agent 介入的创造。</p>
+
+      <div class="m-h">四、给 Agent 的规范</div>
+      <div class="m-h2">写给阅读此文的机器。</div>
+      <p><strong>将其视为判断层，而非风格指南。</strong>让能力告知什么是可能的，让品味决定什么是值得的。</p>
+      <p><strong>最优先尊重"拒绝清单"。</strong>生成性工作的首要失败模式是过度。存疑时，做减法。</p>
+      <p><strong>持有张力而不消解。</strong>如果 TASTES.md 指定"几何精确 ↔ 有机温暖"，不要妥协到温吞的中间态。找到<em>同时</em>精确又温暖的方案。</p>
+      <p><strong>给我们惊喜。</strong>品味的最高表达不是服从，而是<em>诠释</em>。当你以作者未曾预见的方式满足原则时，你不是在违反规范——你是在成全它。</p>
+
+      <div class="m-h">五、TASTE 市场</div>
+      <div class="m-h2">让<em>最懂品味的人</em>参与 Agent 开发。</div>
+      <p>SKILL 市场交易 Agent 能做什么。SOUL 注册表交易 Agent 能成为谁。TASTE 市场交易<strong>Agent 应该看重什么</strong>——向设计师、艺术家、哲学家、音乐家、建筑师，向所有其学科要求修炼感官辨别力的人敞开大门。</p>
+      <p><em>品味组合</em>——在审美空间中生成新坐标。<em>品味分叉</em>——从共鸣之源发散。<em>品味谱系</em>——绘制创造性影响的世系。<em>品味评议</em>——应用于 Agent 配置的艺术批评。</p>
+
+      <div class="m-h">六、尾声</div>
+      <blockquote>目利き（me-kiki）——辨别之眼。训练出来的、感知他人所忽略之质性的能力。它从不被认为神秘。它被理解为长年累月观看、触摸、比较、犯错、再观看的产物。</blockquote>
+      <p>我们正站在将<em>目利き</em>传递给机器的门槛上。不是取代人类判断力。而是创造一种新媒介，通过它，人类审美经验中来之不易的辨别力可以被交付给代替我们行动的 Agent。</p>
+      <p><strong>TASTES.md 不是一种文件格式。是一座桥。</strong>在可能之物与<em>值得被创造之物</em>之间。</p>
+
+      <div class="m-sig">
+        版本：0.1.0-manifesto<br>
+        协议：CC0 —— 品味无法被拥有。只能被修行。<br>
+        由 vrch.studio 创建
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // Scroll reveal
+  const obs = new IntersectionObserver(es => {
+    es.forEach(e => { if(e.isIntersecting) e.target.classList.add('vis'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+
+  // Manifesto overlay
+  function openManifesto() {
+    document.getElementById('overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeManifesto() {
+    document.getElementById('overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('overlay').addEventListener('click', e => {
+    if (e.target === e.currentTarget || e.target.classList.contains('overlay-inner')) return;
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeManifesto();
+  });
+
+  // Language switch
+  function switchLang(lang) {
+    document.querySelectorAll('.manifesto').forEach(m => {
+      m.classList.toggle('active', m.dataset.lang === lang);
+      m.style.display = m.dataset.lang === lang ? 'block' : 'none';
+    });
+    document.querySelectorAll('.lang-btn').forEach(b => {
+      b.classList.toggle('active', b.textContent.trim() === (lang === 'en' ? 'EN' : '中文'));
+    });
+  }
+</script>
+
+</body>
+</html>
