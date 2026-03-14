@@ -15,7 +15,7 @@ It is not written by you and handed to the agent. It is **distilled from your co
 ## Install
 
 ```bash
-mkdir -p ~/.openclaw/skills/tastes && curl -fsSL https://tastes.md/SKILL.md -o ~/.openclaw/skills/tastes/SKILL.md
+mkdir -p ~/.openclaw/skills/tastes && curl -fsSL https://tastes.md/skill.md -o ~/.openclaw/skills/tastes/SKILL.md
 ```
 
 Then say to your agent:
@@ -54,7 +54,7 @@ Then say to your agent:
 
 - **Website** — [tastes.md](https://tastes.md)
 - **Manifesto** — [English](MANIFESTO.md) · [中文](MANIFESTO_ZH.md)
-- **Skill file** — [SKILL.md](https://tastes.md/SKILL.md)
+- **Skill file** — [skill.md](https://tastes.md/skill.md)
 
 ## License
 

@@ -14,11 +14,11 @@ Teach your agent aesthetic judgment. Distill taste from memory and conversation 
 
 | File | URL |
 |------|-----|
-| **SKILL.md** (this file) | `https://tastes.md/SKILL.md` |
+| **SKILL.md** (this file) | `https://tastes.md/skill.md` |
 
 **Install:**
 ```bash
-mkdir -p ~/.openclaw/skills/tastes && curl -fsSL https://tastes.md/SKILL.md -o ~/.openclaw/skills/tastes/SKILL.md
+mkdir -p ~/.openclaw/skills/tastes && curl -fsSL https://tastes.md/skill.md -o ~/.openclaw/skills/tastes/SKILL.md
 ```
 
 **Or just read it from the URL above.**
