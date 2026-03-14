@@ -60,6 +60,3 @@ Then say to your agent:
 
 MIT-0 — Taste cannot be owned. Only practiced.
 
----
-
-Created by [vrch.studio](https://vrch.ai)
