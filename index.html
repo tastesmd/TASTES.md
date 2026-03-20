@@ -9,11 +9,11 @@
 
   :root {
     --black: #0a0a0a;
-    --white: #e8e4df;
-    --cream: #d4cfc8;
-    --dim: #6b6560;
-    --accent: #c4a882;
-    --abright: #e0c9a6;
+    --white: #f0ece7;
+    --cream: #e0dbd4;
+    --dim: #9a938c;
+    --accent: #d4b88e;
+    --abright: #edd9b8;
     --red: #a85c4c;
     --mono: 'IBM Plex Mono', monospace;
     --serif: 'Playfair Display', Georgia, serif;
@@ -351,6 +351,55 @@
     color:var(--dim); line-height:2;
   }
 
+  /* INSTALL BOX */
+  .hero-install {
+    margin-top: 2.5rem; max-width: 540px;
+    opacity: 0; animation: fu .7s ease .8s forwards;
+  }
+  .install-label {
+    font-family: var(--mono); font-size: 0.7rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--dim); margin-bottom: 0.8rem;
+  }
+  .install-box {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(107,101,96,0.25);
+    border-radius: 4px;
+    padding: 1rem 1.2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; cursor: pointer;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .install-box:hover { border-color: var(--accent); background: rgba(255,255,255,0.06); }
+  .install-box code {
+    font-family: var(--mono); font-size: 0.78rem;
+    color: var(--abright); line-height: 1.5;
+    word-break: break-word;
+  }
+  .install-copy {
+    font-family: var(--mono); font-size: 0.6rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--dim); flex-shrink: 0;
+    padding: 0.3rem 0.7rem;
+    border: 1px solid rgba(107,101,96,0.2);
+    border-radius: 3px;
+    transition: all 0.3s;
+  }
+  .install-box:hover .install-copy { color: var(--accent); border-color: var(--accent); }
+  .install-steps {
+    list-style: none; counter-reset: ist;
+    margin-top: 1.2rem; display: flex; gap: 1.5rem;
+  }
+  .install-steps li {
+    counter-increment: ist;
+    font-family: var(--mono); font-size: 0.68rem;
+    color: var(--dim); display: flex; align-items: center; gap: 0.5rem;
+  }
+  .install-steps li::before {
+    content: counter(ist) ".";
+    color: var(--accent); font-weight: 500;
+  }
+
   /* ANIMATIONS */
   @keyframes fu {
     from { opacity:0; transform:translateY(1.2rem); }
@@ -370,6 +419,7 @@
     .hero { padding:0 1.2rem; }
     .triad, .eg { grid-template-columns:1fr; }
     .step { grid-template-columns:2.5rem 1fr; gap:1rem; }
+    .install-steps { flex-direction:column; gap:0.6rem; }
     .cta-btns { flex-direction:column; align-items:center; }
     footer { flex-direction:column; gap:1rem; text-align:center; }
     .fr { justify-content:center; }
@@ -384,7 +434,7 @@
 <nav>
   <a href="/" class="nav-logo">tastes.md</a>
   <ul class="nav-links">
-    <li><a href="https://github.com/tastesmd/tastes.md">Spec</a></li>
+    <li><a href="https://tastes.md/skill.md">Install</a></li>
     <li><a href="#" onclick="openManifesto();return false;">Manifesto</a></li>
     <li><a href="https://github.com/tastesmd/tastes.md">GitHub</a></li>
   </ul>
@@ -395,9 +445,20 @@
   <p class="hero-pre">An open standard for aesthetic judgment in AI agents</p>
   <h1>TASTES<span class="dot">.</span><span class="md">md</span></h1>
   <p class="hero-sub">The layer between soul and skill.</p>
+  <div class="hero-install">
+    <p class="install-label">Send this to your agent</p>
+    <div class="install-box" onclick="copyInstall(this)">
+      <code>Read https://tastes.md/skill.md and follow the instructions to setup TASTES.md</code>
+      <span class="install-copy">Copy</span>
+    </div>
+    <ol class="install-steps">
+      <li>Send this to your agent</li>
+      <li>They set up TASTES.md in your project</li>
+      <li>Start collaborating with tastes</li>
+    </ol>
+  </div>
   <div class="hero-cta">
-    <a href="https://github.com/tastesmd/tastes.md" class="btn btn-p">Read the Spec</a>
-    <button class="btn btn-s" onclick="openManifesto()">Manifesto</button>
+    <button class="btn btn-s" onclick="openManifesto()">Read the Manifesto</button>
   </div>
 </section>
 
@@ -525,8 +586,11 @@
 <section class="cta rv">
   <h2>Infinite generation demands<br><em>infinite discernment</em>.</h2>
   <p class="cta-sub">Taste cannot be owned. Only practiced.</p>
+  <div class="install-box" onclick="copyInstall(this)" style="max-width:540px;margin:0 auto 1.5rem;">
+    <code>Read https://tastes.md/skill.md and follow the instructions to setup TASTES.md</code>
+    <span class="install-copy">Copy</span>
+  </div>
   <div class="cta-btns">
-    <a href="https://github.com/tastesmd/tastes.md" class="btn btn-p">Read the Spec</a>
     <button class="btn btn-s" onclick="openManifesto()">Read the Manifesto</button>
   </div>
 </section>
@@ -654,6 +718,22 @@
 </div>
 
 <script>
+  // Copy install command
+  function copyInstall(el) {
+    const text = el.querySelector('code').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = el.querySelector('.install-copy');
+      btn.textContent = 'Copied!';
+      btn.style.color = 'var(--abright)';
+      btn.style.borderColor = 'var(--abright)';
+      setTimeout(() => {
+        btn.textContent = 'Copy';
+        btn.style.color = '';
+        btn.style.borderColor = '';
+      }, 2000);
+    });
+  }
+
   // Scroll reveal
   const obs = new IntersectionObserver(es => {
     es.forEach(e => { if(e.isIntersecting) e.target.classList.add('vis'); });
