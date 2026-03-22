@@ -197,13 +197,19 @@
   .step p { font-size:0.85rem; color:var(--dim); max-width:48ch; }
 
   /* ROLES */
-  .roles { display:flex; flex-wrap:wrap; gap:0.5rem; margin-top:1.5rem; }
+  .roles { overflow:hidden; margin-top:1.5rem; position:relative; }
+  .roles::before, .roles::after { content:''; position:absolute; top:0; bottom:0; width:3rem; z-index:1; pointer-events:none; }
+  .roles::before { left:0; background:linear-gradient(to right, var(--bg), transparent); }
+  .roles::after { right:0; background:linear-gradient(to left, var(--bg), transparent); }
+  .roles-track {
+    display:flex; gap:2rem; width:max-content;
+    animation:marquee 20s linear infinite;
+  }
+  @keyframes marquee { 0% { transform:translateX(0); } 100% { transform:translateX(-50%); } }
   .role {
     font-family:var(--mono); font-size:0.68rem; letter-spacing:0.04em;
-    padding:0.45rem 1rem; border:1px solid rgba(107,101,96,0.2);
-    color:var(--cream); transition:all .3s; cursor:default;
+    color:var(--cream); white-space:nowrap;
   }
-  .role:hover { border-color:var(--accent); color:var(--abright); }
 
   /* ECO GRID */
   .eg {
@@ -567,12 +573,16 @@
   <div class="label">Ecosystem</div>
   <h2>Opening agent development to <em>everyone who understands taste</em>.</h2>
   <div class="roles">
-    <span class="role">Designers</span><span class="role">Artists</span>
-    <span class="role">Architects</span><span class="role">Musicians</span>
-    <span class="role">Philosophers</span><span class="role">Cinematographers</span>
-    <span class="role">Typographers</span><span class="role">Choreographers</span>
-    <span class="role">Ceramicists</span><span class="role">Curators</span>
-    <span class="role">Cultural Critics</span><span class="role">Chefs</span>
+    <div class="roles-track">
+      <span class="role">Designers</span><span class="role">Artists</span>
+      <span class="role">Architects</span><span class="role">Musicians</span>
+      <span class="role">Philosophers</span><span class="role">Cinematographers</span>
+      <span class="role">Typographers</span><span class="role">Curators</span>
+      <span class="role">Designers</span><span class="role">Artists</span>
+      <span class="role">Architects</span><span class="role">Musicians</span>
+      <span class="role">Philosophers</span><span class="role">Cinematographers</span>
+      <span class="role">Typographers</span><span class="role">Curators</span>
+    </div>
   </div>
   <div class="eg" style="margin-top:2.5rem;">
     <div class="ec"><h3>Taste Composition</h3><p>Combine Zumthor's spatial philosophy with Sakamoto's temporal sensibility. A new coordinate in aesthetic space.</p></div>
@@ -585,7 +595,7 @@
 <!-- CTA -->
 <section class="cta rv">
   <h2>Infinite generation demands<br><em>infinite discernment</em>.</h2>
-  <p class="cta-sub">Taste cannot be owned. Only practiced.</p>
+  <p class="cta-sub"></p>
   <div class="install-box" onclick="copyInstall(this)" style="max-width:540px;margin:0 auto 1.5rem;">
     <code>Read https://tastes.md/skill.md and follow the instructions to setup TASTES.md</code>
     <span class="install-copy">Copy</span>
@@ -596,7 +606,7 @@
 </section>
 
 <footer>
-  <div>MIT-0 — No rights reserved</div>
+  <div>MIT-0 — Taste cannot be owned. Only practiced.</div>
   <div class="fr">
     <a href="https://github.com/tastesmd/tastes.md">GitHub</a>
     <a href="#" onclick="openManifesto();return false;">Manifesto</a>
@@ -658,8 +668,7 @@
 
       <div class="m-sig">
         Version: 0.1.0-manifesto<br>
-        License: CC0 — Taste cannot be owned. Only practiced.<br>
-        Created by vrch.studio
+        License: MIT-0 — Taste cannot be owned. Only practiced.
       </div>
     </div>
 
@@ -709,8 +718,7 @@
 
       <div class="m-sig">
         版本：0.1.0-manifesto<br>
-        协议：CC0 —— 品味无法被拥有。只能被修行。<br>
-        由 vrch.studio 创建
+        协议：MIT-0 —— 品味无法被拥有。只能被修行。
       </div>
     </div>
 
